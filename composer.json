@@ -1,5 +1,7 @@
 {
     "name": "theimp/theimp",
+    "description": "Some tools assembled into library",
+    "license": "MIT",
     "require-dev": {
         "phpstan/phpstan": "^0.12.36",
         "phpunit/phpunit": "^9.3"
@@ -7,7 +9,7 @@
     "authors": [
         {
             "name": "Konstantin Puchkov",
-            "email": "puchkovk@ya.ru"
+            "email": "puchkovk+imp@ya.ru"
         }
     ],
     "require": {
