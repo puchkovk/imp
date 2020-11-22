@@ -1,2 +1,2 @@
-imp
-===
+# Imp - Yet another PHP framework
+
