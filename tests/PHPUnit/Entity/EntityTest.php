@@ -58,7 +58,7 @@ class EntityTest extends TestCase
 
         $this->expectException(UnknownPropertyException::class);
 
-        $foo = $entity->foo;
+        $foo = $entity->get('foo');
     }
 
     public function testToArray(): void
