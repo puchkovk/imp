@@ -1,0 +1,6 @@
+parameters:
+    excludes_analyse:
+        - %currentWorkingDirectory%/.git/
+        - %currentWorkingDirectory%/vendor/
+
+    reportUnmatchedIgnoredErrors: false
