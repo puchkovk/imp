@@ -23,6 +23,11 @@
             "TheImp\\": "./src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "TheImpTest\\": "./tests/"
+        }
+    },
     "scripts": {
         "stan" : [
             "./vendor/bin/phpstan analyse . --memory-limit=1000M --level max -c tests/phpstan.neon"

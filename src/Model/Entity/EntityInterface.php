@@ -7,16 +7,9 @@ namespace TheImp\Model\Entity;
 interface EntityInterface
 {
     /**
-     * @param mixed[] $data
-     *
-     * @return static
-     */
-    public static function fromArray(array $data): self;
-
-    /**
      * @param array<string, mixed> $data
      */
-    public function __construct(array $data);
+    public function __construct(array $data = []);
 
     public function validate(): bool;
 
@@ -26,16 +19,17 @@ interface EntityInterface
     public function toArray(): array;
 
     /**
-     * @param string $property
+     * @param string $propertyName
      * @param mixed $value
      *
      * @return $this
      */
-    public function set(string $property, $value): self;
+    public function set(string $propertyName, $value): self;
 
     /**
-     * @param string     $property
-     * @return $this
+     * @param string     $propertyName
+     *
+     * @return mixed
      */
-    public function get(string $property): self;
+    public function get(string $propertyName);
 }
