@@ -3,6 +3,8 @@ namespace TheImpTests\PHPUnit\Entity;
 
 use PHPUnit\Framework\TestCase;
 use TheImp\Exception\Entity\UnknownPropertyException;
+use TheImp\Model\Entity\Entity;
+use TheImp\Model\Entity\Property;
 use TheImpTest\Mock\Entity\DummyEntityOne;
 
 class EntityTest extends TestCase
@@ -10,7 +12,7 @@ class EntityTest extends TestCase
 
     public function testBasicUsage(): void
     {
-        $entity = new DummyEntityOne([
+        $entity = new DummyEntityTwo([
             'id'    => 1,
             'title' => 'One',
                                      ]);
@@ -21,7 +23,7 @@ class EntityTest extends TestCase
 
     public function testGet(): void
     {
-        $entity = new DummyEntityOne([
+        $entity = new DummyEntityTwo([
                                          'id'    => 1,
                                          'title' => 'One',
                                      ]);
@@ -30,7 +32,7 @@ class EntityTest extends TestCase
         $entity->id = 3;
         $this->assertEquals(3,     $entity->id);
 
-        $entitySecondOne = new DummyEntityOne([
+        $entitySecondOne = new DummyEntityTwo([
                                          'id'    => 1,
                                      ]);
         $title = $entitySecondOne->title;
@@ -39,7 +41,7 @@ class EntityTest extends TestCase
 
     public function testSetUnknownProperty(): void
     {
-        $entity = new DummyEntityOne([
+        $entity = new DummyEntityTwo([
                                          'id'    => 1,
                                          'title' => 'One',
                                      ]);
@@ -51,7 +53,7 @@ class EntityTest extends TestCase
 
     public function testGetUnknownProperty(): void
     {
-        $entity = new DummyEntityOne([
+        $entity = new DummyEntityTwo([
                                          'id'    => 1,
                                          'title' => 'One',
                                      ]);
@@ -63,7 +65,7 @@ class EntityTest extends TestCase
 
     public function testToArray(): void
     {
-        $entity = new DummyEntityOne([
+        $entity = new DummyEntityTwo([
             'id'    => 1,
             'title' => 'One',
                                      ]);
@@ -72,5 +74,27 @@ class EntityTest extends TestCase
 
         $this->assertEquals(1,     $array['id']);
         $this->assertEquals('One', $array['title']);
+    }
+}
+
+
+/**
+ * @property int    $id
+ * @property string $title
+ *
+ */
+class DummyEntityTwo extends Entity
+{
+    protected static function properties(): array
+    {
+        return [
+            new Property('id'),
+            new Property('title'),
+        ];
+    }
+
+    public function validate(): bool
+    {
+        return true;
     }
 }
