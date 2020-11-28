@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TheImp\Model\Entity;
 
+use TheImp\Model\Entity\Property\Property;
 use TheImp\Exception\Entity\UnknownPropertyException;
 
 abstract class Entity implements EntityInterface

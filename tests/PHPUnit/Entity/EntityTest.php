@@ -1,18 +1,21 @@
 <?php
-namespace TheImpTests\PHPUnit\Entity;
+namespace TheImp\Tests\PHPUnit\Entity;
 
 use PHPUnit\Framework\TestCase;
 use TheImp\Exception\Entity\UnknownPropertyException;
 use TheImp\Model\Entity\Entity;
-use TheImp\Model\Entity\Property;
-use TheImpTest\Mock\Entity\DummyEntityOne;
+use TheImp\Model\Entity\Property\Property;
+use TheImp\Test\Mock\Entity\{
+    DummyEntityOne,
+    DummyEntityTwo
+};
 
 class EntityTest extends TestCase
 {
 
     public function testBasicUsage(): void
     {
-        $entity = new DummyEntityTwo([
+        $entity = new DummyEntityOne([
             'id'    => 1,
             'title' => 'One',
                                      ]);
@@ -74,27 +77,5 @@ class EntityTest extends TestCase
 
         $this->assertEquals(1,     $array['id']);
         $this->assertEquals('One', $array['title']);
-    }
-}
-
-
-/**
- * @property int    $id
- * @property string $title
- *
- */
-class DummyEntityTwo extends Entity
-{
-    protected static function properties(): array
-    {
-        return [
-            new Property('id'),
-            new Property('title'),
-        ];
-    }
-
-    public function validate(): bool
-    {
-        return true;
     }
 }

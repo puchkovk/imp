@@ -12,7 +12,7 @@ use TheImp\Model\Entity\Property\Property;
  * @property string $title
  *
  */
-class DummyEntityOne extends Entity
+class DummyEntityTwo extends Entity
 {
     protected static function properties(): array
     {
