@@ -34,6 +34,11 @@ abstract class Entity implements EntityInterface
      */
     abstract protected static function properties(): array;
 
+    public function validate(): bool
+    {
+        return true;
+    }
+
     /**
      * @param array<string, mixed> $data
      */
