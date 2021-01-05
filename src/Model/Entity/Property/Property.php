@@ -15,6 +15,12 @@ class Property
     public const TYPE = self::TYPE_STRING;
 
     protected string $name;
+    protected bool   $nullable = false;
+
+    /**
+     * @var mixed
+     */
+    protected        $default = null;
 
     public function __construct(string $name)
     {
@@ -24,5 +30,24 @@ class Property
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setNullable(bool $nullable): self
+    {
+        $this->nullable = $nullable;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setDefault($value): self
+    {
+        $this->default = $value;
+
+        return $this;
     }
 }

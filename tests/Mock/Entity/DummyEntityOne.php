@@ -21,9 +21,4 @@ class DummyEntityOne extends Entity
             new Property('title'),
         ];
     }
-
-    public function validate(): bool
-    {
-        return true;
-    }
 }
