@@ -7,6 +7,11 @@ namespace TheImp\Controller;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TheImp\Exception\Http\{
+    MovedPermanentlyException,
+    NotFoundException,
+    FoundException,
+};
 use TheImp\View\ViewInterface;
 
 abstract class TemplatedController extends AbstractController
@@ -33,12 +38,24 @@ abstract class TemplatedController extends AbstractController
     {
         $variables = $this->action();
 
-        //$body     = '<h2>Hello, world 8!</h2>' . var_export($this->shopRepository->getAll(), true);
         $response = new Response;
-        //$template =
-        $answer = $this->view->render($this->templateName, $variables);
-        $response->getBody()->write($answer);
-        return $response->withStatus($this->statusCode);
+        try {
+            $answer = $this->view->render($this->templateName, $variables);
+            $response->getBody()->write($answer);
+            $response->withStatus(200);
+        } catch (NotFoundException $notFoundException) {
+            $response->getBody()->write('Not found');
+            $response->withStatus($notFoundException->getCode());
+        } catch (FoundException $movedPermanentlyException) {
+            $response = new Response\RedirectResponse($movedPermanentlyException->getUrl(), $movedPermanentlyException->getCode());
+            return $response;
+        } catch (MovedPermanentlyException $movedPermanentlyException) {
+            $response = new Response\RedirectResponse($movedPermanentlyException->getUrl(), $movedPermanentlyException->getCode());
+            return $response;
+        } catch (\Throwable $throwable) {
+            $response->withStatus(500);
+        }
+        return $response;
     }
 
     /**
