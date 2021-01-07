@@ -100,7 +100,7 @@ class View implements ViewInterface
 
         $templateFilename = $this->templateRoot . '/' . $template . '.php';
         if ( !file_exists($templateFilename)) {
-            throw new ViewException('Template ' . $template . ' not found');
+            throw new ViewException('Template ' . $templateFilename . ' not found');
         }
 
         ob_start();

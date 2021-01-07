@@ -19,7 +19,6 @@ abstract class TemplatedController extends AbstractController
     protected ViewInterface $view;
 
     private string $templateName;
-    private int $statusCode = 200;
 
     public function __construct(ViewInterface $view, string $templateName)
     {
@@ -53,6 +52,7 @@ abstract class TemplatedController extends AbstractController
             $response = new Response\RedirectResponse($movedPermanentlyException->getUrl(), $movedPermanentlyException->getCode());
             return $response;
         } catch (\Throwable $throwable) {
+            $response->getBody()->write('Server error: ' . $throwable->getMessage());
             $response->withStatus(500);
         }
         return $response;
