@@ -11,6 +11,15 @@ class View implements ViewInterface
      */
     private static array $globals = [];
 
+    private ?string $extendsTemplate = null;
+
+    private ?string $currentBlock = null;
+
+    /**
+     * @var string[]
+     */
+    private array $blocks = [];
+
     /**
      * @var mixed[]
      */
@@ -107,6 +116,42 @@ class View implements ViewInterface
         extract($this->params);
         include $templateFilename;
 
+        $this->extendsTemplate = null;
+
         return (string) ob_get_clean();
+    }
+
+    protected function extends(string $templateName): void
+    {
+        if (null !== $this->extendsTemplate) {
+            throw new ViewException('Unexpected extends method call');
+        }
+
+        $this->extendsTemplate = $templateName;
+    }
+
+    protected function block(string $blockName): void
+    {
+        if (null !== $this->currentBlock) {
+            throw new ViewException('Unexpected block start');
+        }
+        $this->currentBlock = $blockName;
+        ob_start();
+    }
+
+    protected function blockEnd(): void
+    {
+        if (null === $this->currentBlock) {
+            throw new ViewException('Unexpected block end');
+        }
+
+        $blockOutput = $this->blocks[$this->currentBlock] ?? (string) ob_get_clean();
+        if (null !== $this->extendsTemplate) {
+            $this->blocks[$this->currentBlock] = $blockOutput;
+        } else {
+            echo $blockOutput;
+        }
+
+        $this->currentBlock = null;
     }
 }
