@@ -106,6 +106,10 @@ class View implements ViewInterface
      */
     public function render(string $template, array $params = []): string
     {
+        if ( !empty($params)) {
+            $this->setParams($params);
+        }
+
         $template = ltrim($template, '/');
 
         $systemTemplateFilename = $this->templateRoot . '/' . $template . '.php';

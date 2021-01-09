@@ -81,4 +81,19 @@ class ViewTest extends TestCase
         $output = ob_get_clean();
         $this->assertSame('Block1Block2 extends2', $result);
     }
+
+    public function testExtendsWithVars(): void
+    {
+        $tplRoot = __DIR__ . '/../../Mock/Template';
+        $view = new View();
+        $view->setTemplateRoot($tplRoot);
+        $params = [
+            'one' => 1,
+            'two' => 2,
+        ];
+
+        $result = $view->render('extends3', $params);
+
+        $this->assertSame('Block1 var 1Block2 extends2 var 2', $result);
+    }
 }
