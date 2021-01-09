@@ -70,4 +70,15 @@ class ViewTest extends TestCase
         $view->setParams($paramsTest);
         $this->assertSame($paramsTest, $view->getParams());
     }
+
+    public function testExtends(): void
+    {
+        $tplRoot = __DIR__ . '/../../Mock/Template';
+        $view = new View();
+        $view->setTemplateRoot($tplRoot);
+        ob_start();
+        $result = $view->render('extends1');
+        $output = ob_get_clean();
+        $this->assertSame('Block1Block2 extends2', $result);
+    }
 }

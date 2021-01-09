@@ -6,6 +6,7 @@ namespace TheImp\View;
 
 class View implements ViewInterface
 {
+    protected const EXTENDS_DEPTH_MAX = 99;
     /**
      * @var mixed[]
      */
@@ -107,16 +108,25 @@ class View implements ViewInterface
     {
         $template = ltrim($template, '/');
 
-        $templateFilename = $this->templateRoot . '/' . $template . '.php';
-        if ( !file_exists($templateFilename)) {
-            throw new ViewException('Template ' . $templateFilename . ' not found');
+        $systemTemplateFilename = $this->templateRoot . '/' . $template . '.php';
+        unset ($template);
+        if (!file_exists($systemTemplateFilename)) {
+            throw new ViewException('Template ' . $systemTemplateFilename . ' not found');
         }
 
         ob_start();
         extract($this->params);
-        include $templateFilename;
-
-        $this->extendsTemplate = null;
+        include $systemTemplateFilename;
+        $systemExtendsDepthIterator = 0;
+        while ($this->extendsTemplate !== null && $systemExtendsDepthIterator < self::EXTENDS_DEPTH_MAX) {
+            $extendsTemplateFilename = $this->templateRoot . '/' . $this->extendsTemplate . '.php';
+            $this->extendsTemplate = null;
+            if ( !file_exists($extendsTemplateFilename)) {
+                throw new ViewException('Template ' . $extendsTemplateFilename . ' not found');
+            }
+            $systemExtendsDepthIterator++;
+            include $extendsTemplateFilename;
+        }
 
         return (string) ob_get_clean();
     }
@@ -145,7 +155,13 @@ class View implements ViewInterface
             throw new ViewException('Unexpected block end');
         }
 
-        $blockOutput = $this->blocks[$this->currentBlock] ?? (string) ob_get_clean();
+        if (isset($this->blocks[$this->currentBlock])) {
+            $blockOutput = $this->blocks[$this->currentBlock];
+            ob_end_clean();
+        } else {
+            $blockOutput = (string) ob_get_clean();
+        }
+
         if (null !== $this->extendsTemplate) {
             $this->blocks[$this->currentBlock] = $blockOutput;
         } else {
