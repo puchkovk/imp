@@ -56,6 +56,20 @@ abstract class Entity implements EntityInterface
     }
 
     /**
+     * @param array<array<mixed>> $array
+     * @return self[]
+     */
+    public static function fromArrayBatch(array $array): array
+    {
+        $result = [];
+        foreach ($array as $row) {
+            $result[] = new static($row);
+        }
+
+        return $result;
+    }
+
+    /**
      * @param string $propertyName
      * @param mixed $value
      *
