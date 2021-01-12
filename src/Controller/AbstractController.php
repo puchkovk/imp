@@ -16,6 +16,11 @@ abstract class AbstractController
     protected array $query;
 
     /**
+     * @var array<mixed>
+     */
+    protected array $attributes;
+
+    /**
      * @var mixed[]
      */
     protected array $body;
@@ -36,13 +41,25 @@ abstract class AbstractController
 
     final public function __invoke(ServerRequestInterface $request) : ResponseInterface
     {
-        $this->query = $request->getQueryParams();
-        $this->body  = (array) ($request->getParsedBody() ?? []);
+        $this->query      = $request->getQueryParams();
+        $this->body       = (array) ($request->getParsedBody() ?? []);
+        $this->attributes = $request->getAttributes();
 
         $this->before();
         $this->response = $this->run();
         $this->after();
         return $this->response;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
+    protected function getAttribute(string $name, $default = null)
+    {
+        return $this->attributes[$name] ?? $default;
     }
 
     /**
