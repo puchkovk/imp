@@ -1,6 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
+use TheImp\View\View;
+
 /**
- * @var \TheImp\View\View $this
+ * @var View $this
+ *
  * @var int $one
  * @var int $two
  */

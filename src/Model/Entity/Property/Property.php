@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TheImp\Model\Entity\Property;
 
-class Property
+abstract class Property
 {
     public const TYPE_ID     = 'id';
     public const TYPE_INT    = 'int';
@@ -39,6 +39,11 @@ class Property
         return $this;
     }
 
+    public function isNullable(): bool
+    {
+        return $this->nullable;
+    }
+
     /**
      * @param mixed $value
      *
@@ -50,4 +55,19 @@ class Property
 
         return $this;
     }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    abstract public function sanitize($value);
+
+    /**
+     * @param mixed $value
+     * @param string $message
+     *
+     * @return bool
+     */
+    abstract public function validate($value, string &$message): bool;
 }

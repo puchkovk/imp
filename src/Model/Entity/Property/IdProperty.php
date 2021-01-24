@@ -10,4 +10,22 @@ namespace TheImp\Model\Entity\Property;
 class IdProperty extends Property
 {
     public const TYPE = self::TYPE_INT;
+
+    public function sanitize($value): string
+    {
+        return (string) $value;
+    }
+
+    public function validate($value, &$message): bool
+    {
+        if (null !== $value && empty($value)) {
+            return false;
+        }
+        if (!is_string($value)) {
+            $message = 'must be a string';
+            return false;
+        }
+
+        return true;
+    }
 }

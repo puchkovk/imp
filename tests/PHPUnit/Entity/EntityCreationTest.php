@@ -1,14 +1,11 @@
 <?php
-namespace TheImp\Tests\PHPUnit\Entity;
+
+declare(strict_types=1);
+
+namespace TheImp\Tests\Tests\PHPUnit\Entity;
 
 use PHPUnit\Framework\TestCase;
-use TheImp\Exception\Entity\UnknownPropertyException;
-use TheImp\Model\Entity\Entity;
-use TheImp\Model\Entity\Property\Property;
-use TheImp\Test\Mock\Entity\{
-    DummyEntityOne,
-    DummyEntityTwo
-};
+use TheImp\Test\Mock\Entity\DummyEntityOne;
 
 class EntityCreationTest extends TestCase
 {
@@ -28,6 +25,7 @@ class EntityCreationTest extends TestCase
         $entities = DummyEntityOne::fromArrayBatch($array);
         $this->assertNotEmpty($entities);
         foreach ($entities as $entity) {
+            /** @var DummyEntityOne $entity */
             $this->assertInstanceOf(DummyEntityOne::class, $entity);
             switch ($entity->id) {
                 case 1:

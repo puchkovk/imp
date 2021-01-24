@@ -10,7 +10,7 @@ use TheImp\Exception\Entity\UnknownPropertyException;
 abstract class Entity implements EntityInterface
 {
     /**
-     * @var array<string, mixed>
+     * @var array<string, array<string, Property>>
      */
     private static array $properties;
 
@@ -47,7 +47,31 @@ abstract class Entity implements EntityInterface
         if ( !isset(self::$properties[static::class])) {
             self::configureProperties(static::properties());
         }
-        $this->propertyValues = $data;
+        $clearData = [];
+        $notValidProperties = [];
+        foreach (self::$properties[static::class] as $propertyName => $property) {
+            if (!isset($data[$propertyName]) && $property->isNullable()) {
+                $clearData[$propertyName] = null;
+            } elseif (isset($data[$propertyName])) {
+                $value = $property->sanitize($data[$propertyName]);
+                if (null === $value) {
+                    $clearData[$propertyName] = null;
+                } else {
+                    $valid = $property->validate($value, $validationMessage);
+                    if ($valid) {
+                        $clearData[$propertyName] = $value;
+                    } else {
+                        $notValidProperties[$propertyName] = $validationMessage;
+                    }
+                }
+            } else {
+                $notValidProperties[$propertyName] = 'Property missed but not nullable';
+            }
+        }
+        if (!empty($notValidProperties)) {
+            throw new NotValidEntityException(static::class, $notValidProperties);
+        }
+        $this->propertyValues = $clearData;
     }
 
     public function toArray(): array

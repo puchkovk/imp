@@ -1,7 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
+use TheImp\View\View;
+
 /**
- * @var \TheImp\View\View $this
+ * @var View $this
  */
+
 $this->block('block1');
 echo 'Block1 extends2';
 $this->blockEnd();

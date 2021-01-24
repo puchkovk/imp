@@ -135,7 +135,7 @@ class View implements ViewInterface
         return (string) ob_get_clean();
     }
 
-    protected function extends(string $templateName): void
+    public function extends(string $templateName): void
     {
         if (null !== $this->extendsTemplate) {
             throw new ViewException('Unexpected extends method call');
@@ -144,7 +144,7 @@ class View implements ViewInterface
         $this->extendsTemplate = $templateName;
     }
 
-    protected function block(string $blockName): void
+    public function block(string $blockName): void
     {
         if (null !== $this->currentBlock) {
             throw new ViewException('Unexpected block start');
@@ -153,7 +153,7 @@ class View implements ViewInterface
         ob_start();
     }
 
-    protected function blockEnd(): void
+    public function blockEnd(): void
     {
         if (null === $this->currentBlock) {
             throw new ViewException('Unexpected block end');
