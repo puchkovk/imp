@@ -19,6 +19,7 @@
     </include>
     <report>
       <text outputFile="php://stdout" showUncoveredFiles="false"/>
+      <clover outputFile="../clover.xml"/>
     </report>
   </coverage>
   <testsuites>
