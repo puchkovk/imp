@@ -15,7 +15,7 @@ class View implements ViewInterface
     private ?string $extendsTemplate = null;
 
     private ?string $currentBlock = null;
-
+    private int $renderDepth = 0;
     /**
      * @var string[]
      */
@@ -106,6 +106,8 @@ class View implements ViewInterface
      */
     public function render(string $template, array $params = []): string
     {
+        $this->renderDepth++;
+
         if ( !empty($params)) {
             $this->setParams($params);
         }
@@ -121,17 +123,20 @@ class View implements ViewInterface
         ob_start();
         extract($this->params);
         include $systemTemplateFilename;
-        $systemExtendsDepthIterator = 0;
-        while ($this->extendsTemplate !== null && $systemExtendsDepthIterator < self::EXTENDS_DEPTH_MAX) {
-            $extendsTemplateFilename = $this->templateRoot . '/' . $this->extendsTemplate . '.php';
-            $this->extendsTemplate = null;
-            if ( !file_exists($extendsTemplateFilename)) {
-                throw new ViewException('Template ' . $extendsTemplateFilename . ' not found');
+        // Do not render extendes templated when calling render inside a template
+        if ($this->renderDepth <= 1) {
+            $systemExtendsDepthIterator = 0;
+            while ($this->extendsTemplate !== null && $systemExtendsDepthIterator < self::EXTENDS_DEPTH_MAX) {
+                $extendsTemplateFilename = $this->templateRoot . '/' . $this->extendsTemplate . '.php';
+                $this->extendsTemplate = null;
+                if ( !file_exists($extendsTemplateFilename)) {
+                    throw new ViewException('Template ' . $extendsTemplateFilename . ' not found');
+                }
+                $systemExtendsDepthIterator++;
+                include $extendsTemplateFilename;
             }
-            $systemExtendsDepthIterator++;
-            include $extendsTemplateFilename;
         }
-
+        $this->renderDepth--;
         return (string) ob_get_clean();
     }
 

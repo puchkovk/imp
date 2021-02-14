@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TheImp\Tests\PHPUnit\View;
+namespace TheImp\Test\PHPUnit\View;
 
 use PHPUnit\Framework\TestCase;
 use TheImp\View\View;
@@ -95,5 +95,17 @@ class ViewTest extends TestCase
         $result = $view->render('extends3', $params);
 
         $this->assertSame('Block1 var 1Block2 extends2 var 2', $result);
+    }
+
+    public function testRenderInTemplate(): void
+    {
+        $tplRoot = __DIR__ . '/../../Mock/Template';
+        $view = new View();
+        $view->setTemplateRoot($tplRoot);
+        $params = [];
+
+        $result = $view->render('import', $params);
+
+        $this->assertSame('We will import: Imported template with param: AA', $result);
     }
 }

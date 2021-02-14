@@ -19,6 +19,7 @@ class IdProperty extends Property
     public function validate($value, &$message): bool
     {
         if (null !== $value && empty($value)) {
+            $message = 'empty but not null';
             return false;
         }
         if (!is_string($value)) {
