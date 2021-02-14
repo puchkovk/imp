@@ -35,7 +35,7 @@
             "./vendor/bin/phpstan analyse . --memory-limit=1000M --level max -c phpstan.neon"
         ],
         "unit": [
-            "./vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover coverage.xml"
+            "./vendor/bin/phpunit -c tests/phpunit.xml --coverage-clover clover.xml"
         ]
     },
     "config": {
