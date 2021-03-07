@@ -21,6 +21,11 @@ abstract class AbstractController
     protected array $attributes;
 
     /**
+     * @var array<mixed>
+     */
+    protected array $cookies;
+
+    /**
      * @var mixed[]
      */
     protected array $body;
@@ -44,6 +49,7 @@ abstract class AbstractController
         $this->query      = $request->getQueryParams();
         $this->body       = (array) ($request->getParsedBody() ?? []);
         $this->attributes = $request->getAttributes();
+        $this->cookies    = $request->getCookieParams();
 
         $this->before();
         $this->response = $this->run();
