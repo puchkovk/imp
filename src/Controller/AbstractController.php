@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TheImp\Controller;
 
-use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -80,12 +79,23 @@ abstract class AbstractController
      * @param string $key
      * @param mixed|null $default
      *
-     * @return mixed[]
+     * @return mixed
      *
      */
     protected function getQueryParam(string $key, $default = null)
     {
         return $this->query[$key] ?? $default;
+    }
+
+    /**
+     * @param string $key
+     * @param null $default
+     *
+     * @return mixed
+     */
+    protected function getCookie(string $key, $default = null)
+    {
+        return $this->cookies[$key] ?? $default;
     }
 
     /**
