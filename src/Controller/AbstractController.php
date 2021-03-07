@@ -83,7 +83,7 @@ abstract class AbstractController
      * @return mixed[]
      *
      */
-    protected function getQueryParam(string $key, $default = null): array
+    protected function getQueryParam(string $key, $default = null)
     {
         return $this->query[$key] ?? $default;
     }
